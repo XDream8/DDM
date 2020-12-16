@@ -7,6 +7,7 @@ Note: You can download any file from url that has no redirect! This will be fixe
 Upgrade GUI to a good looking one.
 Add Progress Bar
 Add support for redirecting urls
+Some texts may be Turkish. I will fix it and i will support English and Turkish Translate!
 ```
 
 ## Dependencies
