@@ -1,14 +1,14 @@
 # DDM(Dream Download Manager)
 DDM is a Download Manager that i am writing with python.
 
-# Gui Design
+## Gui Design
 I am using PyQt5 for gui design.
 
-# Other Things
+### Other Things
 Dependencies:
    PyQt5     - For GUI
    requests  - For Downloading
-# Recommended way to install(pip)
+### Recommended way to install(pip)
 To install dependencies use below command
 **Bold** and _Italic_ and `Code` text
 ```
