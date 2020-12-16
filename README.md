@@ -1,4 +1,4 @@
-# DDM
+# DDM(Dream Download Manager)
 DDM is a Download Manager that i am writing with python.
 
 # Gui Design
