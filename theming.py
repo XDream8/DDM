@@ -1,10 +1,23 @@
-from PyQt5.QtCore import QFile, QTextStream, QSettings
+from PySide2.QtCore import QFile, QTextStream, QSettings
 import breeze_resources
 
-from PyQt5.QtGui import QColor, QPalette
+from PySide2.QtGui import QColor, QPalette
+
+import icons
 
 
 def init_themes_main(self):
+    self.settings = QSettings("DDM", "DreamDownloadManager")
+    if self.settings.contains('theme_selection'):
+        self.selected_theme = self.settings.value('theme_selection')
+    else:
+        self.settings.setValue('theme_selection', 'Dark')
+
+    if self.settings.contains('selected_lang'):
+        self.sel_lang = self.settings.value('selected_lang')
+    else:
+        self.settings.setValue('selected_lang', 'en')
+
     if self.selected_theme == "Light":
         pass
     elif self.selected_theme == "Breeze Light":
