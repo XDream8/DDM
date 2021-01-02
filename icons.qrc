@@ -1,0 +1,15 @@
+<RCC>
+  <qresource prefix="/" >
+    <file>icons/about.png</file>
+    <file>icons/add.png</file>
+    <file>icons/cil-add.png</file>
+    <file>icons/cil-delete.png</file>
+    <file>icons/cil-home.png</file>
+    <file>icons/cil-menu.png</file>
+    <file>icons/cil-settings.png</file>
+    <file>icons/cil-user.png</file>
+    <file>icons/delete.png</file>
+    <file>icons/exit.png</file>
+    <file>icons/settings.png</file>
+  </qresource>
+</RCC>
