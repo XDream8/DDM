@@ -7,7 +7,7 @@ Note: You can download any file from url that has no redirect! This will be fixe
 
 Add support for redirecting urls \
 Upgrade Main GUI to a good looking one.(Still working on it) \
-~~Speed Up downloading algorith. \
+~~Speed Up downloading algorith.~~ \
 ~~Add Progress Bar~~ \
 ~~Add Settings Menu~~ \
 ~~Add Dark Theme~~ \
