@@ -20,8 +20,8 @@ Copy packaged version to /usr/local/bin to be able to run DDM everywhere.
 > sudo cp to/downloaded/file /usr/local/bin/.
 
 ### Windows
-Like Linux go to the [My Releases Page](https://github.com/XDream8/DDM/releases/) and download one of my packaged version. \
-Than you can run DDM on Windows.
+Go to the [My Releases Page](https://github.com/XDream8/DDM/releases/) and download one of my packaged version. \
+Then you can run DDM on Windows.
 
 ### Dependencies
 
