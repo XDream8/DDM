@@ -1,11 +1,16 @@
-from PyQt5.QtGui import QFont, QIcon, QColor
-from PyQt5.QtWidgets import QPushButton, QLabel, QLineEdit, QMessageBox, QMenuBar, QAction, QDialog, QComboBox
+from PySide2.QtGui import QFont, QIcon, QColor
+from PySide2.QtWidgets import QPushButton, QLabel, QLineEdit, QMessageBox, QMenuBar, QAction, QDialog, QComboBox
 
 # from configuration import *
-from PyQt5.QtCore import QSettings
+from PySide2.QtCore import QSettings, Qt
 
 from theming import init_themes_settings_dialog
 from theming import init_themes_about_dialog
+
+import sys
+import os
+
+import icons
 
 def SetSettings(self):
 
@@ -29,25 +34,19 @@ def SetSettings(self):
 
 
 def restartforsettings(self):
-    self.settings = QSettings("DDM", "DreamDownloadManager")
-    self.selected_theme = self.lang_combobox.currentText()
-    sel_lang = self.settings.value('selected_lang')
-    if sel_lang == "tr":
+    if self.sel_lang == "tr":
         restart = QMessageBox.warning(self.settingsdialog, "Yeniden Başlatma Gerekli",
                                       "Dili yüklemek için yeniden başlatmak gerekli.Uygulamayı yeniden başlatacağız.", QMessageBox.Ok, QMessageBox.Ok)
-    elif sel_lang == "en":
+    elif self.sel_lang == "en":
         restart = QMessageBox.warning(self.settingsdialog, "Restart Required",
                                       "To load the language we will restart the app.", QMessageBox.Ok, QMessageBox.Ok)
-    quit()
+    os.execl(sys.executable, sys.executable, *sys.argv)
 
 
 def SettingsMenu(self):
-    self.settings = QSettings("DDM", "DreamDownloadManager")
-    self.selected_theme = self.settings.value('theme_selection')
-    sel_lang = self.settings.value('selected_lang')
 
     self.settingsdialog = QDialog()
-    self.settingsdialog.setWindowTitle("Settings")
+    self.settingsdialog.setWindowTitle("Ayarlar")
     self.settingsdialog.setFixedSize(240, 220)
 
     self.init_themes_settings_dialog()
@@ -71,16 +70,16 @@ def SettingsMenu(self):
     self.lang_combobox = QComboBox(self.settingsdialog)
     self.lang_combobox.setGeometry(65, 100, 100, 34)
 
-    if sel_lang == "en":
+    if self.sel_lang == "en":
         self.lang_combobox.addItems(["en", "tr"])
-    elif sel_lang == "tr":
+    elif self.sel_lang == "tr":
         self.lang_combobox.addItems(["tr", "en"])
 
     def finished():
         self.settingsdialog.close()
         # self.ThemeSelector()
         # self.LanguageSelector()
-        if self.selected_theme == self.combobox.currentText() and sel_lang == self.lang_combobox.currentText():
+        if self.selected_theme == self.combobox.currentText() and self.sel_lang == self.lang_combobox.currentText():
             pass
         else:
             # self.LanguageSelector()
@@ -94,39 +93,34 @@ def SettingsMenu(self):
         #    self.LanguageSelector()
         #    self.restartforsettingslangs()
 
-    okbutton = QPushButton("Tamam", self.settingsdialog)
-    if sel_lang == "en":
-        okbutton.setText("Ok")
-    okbutton.setGeometry(85, 170, 70, 40)
-    okbutton.setFont(QFont("Hack Nerd Font", 11))
-    okbutton.clicked.connect(finished)
+    self.okbutton = QPushButton("Tamam", self.settingsdialog)
+
+    self.okbutton.setGeometry(85, 170, 70, 40)
+    self.okbutton.setFont(QFont("Hack Nerd Font", 11))
+    self.okbutton.clicked.connect(finished)
+
+    self.reTranslateSettings()
 
     self.settingsdialog.exec()
 
 
 def about(self):
-    self.settings = QSettings("DDM", "DreamDownloadManager")
-    self.selected_theme = self.settings.value('theme_selection')
-    sel_lang = self.settings.value('selected_lang')
 
     self.about_dialog = QDialog()
     self.about_dialog.setFixedSize(225, 225)
-    if sel_lang == "tr":
-        self.about_dialog.setWindowTitle("Hakkımızda")
-    elif sel_lang == "en":
-        self.about_dialog.setWindowTitle("About")
+    self.about_dialog.setWindowTitle("Hakkımızda")
 
     self.init_themes_about_dialog()
 
     programname = QLabel("Dream Download Manager", self.about_dialog)
     programname.setFont(QFont("JetBrains Mono Bold", 14))
     programname.setGeometry(2, 10, 220, 20)
-    owner = QLabel(
-        "    Yapımcı: XDream8\nDDM Sürümü: v0.210Alpha", self.about_dialog)
-    owner.setGeometry(10, 80, 220, 40)
-    if sel_lang == "en":
-        owner.setText("    Owner: XDream8\nDDM Version v0.210Alpha")
-    owner.setFont(QFont("JetBrains Mono Font", 12))
+    self.owner = QLabel(
+        "    Yapımcı: XDream8\nDDM Sürümü: v0.740Beta", self.about_dialog)
+    self.owner.setGeometry(10, 80, 220, 40)
+    self.owner.setFont(QFont("JetBrains Mono Font", 12))
+
+    self.reTranslateAbout()
 
     self.about_dialog.exec()
 
@@ -139,43 +133,52 @@ def exitAction(self):
         cikisonay = QMessageBox.question(
             self, "Exit", "Do you really wanna exit?", QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
     if cikisonay == QMessageBox.Yes:
-        quit()
+        self.close()
     else:
         pass
 
+
 def MenuCreate(self):
-
-    self.settings = QSettings("DDM", "DreamDownloadManager")
-    self.selected_theme = self.settings.value('theme_selection')
-    sel_lang = self.settings.value('selected_lang')
-
     mainMenu = self.menuBar()
-    if sel_lang == "tr":
+    if self.sel_lang == "tr":
         fileMenu = mainMenu.addMenu("Dosya")
         helpMenu = mainMenu.addMenu("Yardım")
-    elif sel_lang == "en":
+    elif self.sel_lang == "en":
         fileMenu = mainMenu.addMenu("File")
         helpMenu = mainMenu.addMenu("Help")
 
-    add_download = QAction(QIcon("icons/add.png"), "Ekle", self)
+    add_download = QAction(QIcon(":/icons/add.png"), "Ekle", self)
     add_download.triggered.connect(self.Add_Download)
     fileMenu.addAction(add_download)
 
-    settings = QAction(QIcon("icons/settings.png"), "Ayarlar", self)
+    settings = QAction(QIcon(":/icons/settings.png"), "Ayarlar", self)
     settings.triggered.connect(self.SettingsMenu)
     fileMenu.addAction(settings)
 
-    exit = QAction(QIcon("icons/exit.png"), "Çıkış", self)
+    exit = QAction(QIcon(":/icons/exit.png"), "Çıkış", self)
     exit.triggered.connect(self.exitAction)
     fileMenu.addAction(exit)
 
-    about = QAction(QIcon("icons/about.png"), "Hakkımızda", self)
+    about = QAction(QIcon(":/icons/about.png"), "Hakkımızda", self)
     about.triggered.connect(self.about)
     helpMenu.addAction(about)
 
-    if sel_lang == "en":
+    if self.sel_lang == "en":
         add_download.setText("Add")
         settings.setText("Settings")
         exit.setText("Exit")
 
         about.setText("About")
+
+
+def reTranslateAbout(self):
+    if self.sel_lang == "en":
+        self.owner.setText("    Owner: XDream8\nDDM Version v0.740Beta")
+
+        self.about_dialog.setWindowTitle("About")
+
+
+def reTranslateSettings(self):
+    if self.sel_lang == "en":
+        self.okbutton.setText("Ok")
+        self.settingsdialog.setWindowTitle("Settings")
